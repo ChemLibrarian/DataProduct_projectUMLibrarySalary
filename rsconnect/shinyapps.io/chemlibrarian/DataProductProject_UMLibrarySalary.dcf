@@ -1,0 +1,9 @@
+name: DataProductProject_UMLibrarySalary
+account: chemlibrarian
+server: shinyapps.io
+bundleId: 315601
+url:
+        https://chemlibrarian.shinyapps.io/DataProductProject_UMLibrarySalary
+when: 1448117822.9821
+asMultiple: FALSE
+asStatic: FALSE

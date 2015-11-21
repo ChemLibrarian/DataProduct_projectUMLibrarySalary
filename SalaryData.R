@@ -49,7 +49,7 @@ summary(UMSalary2002_2014_NoName)
 head(UMSalary2002_2014_NoName$APPT.ANNUAL.FTR)
 class(UMSalary2002_2014_NoName$APPT.ANNUAL.FTR)
 
-# plot graph for year increase of library for different job type. 
+# plot graph for year increase of library for different job type.Exploring codes. Please ignore.
 
 # plotdata <- UMSalary2002_2014_NoName %>%
 #         filter(APPT.FTR.BASIS == "12-Month") %>%
@@ -86,3 +86,17 @@ write.csv(plotdata_library, file = "UMLibrarySalary2002_2014.csv", row.names = F
 # library(ggplot2)
 # ggplot(plotdata_library_use, aes(x = Year, y = Median)) +
 #         geom_bar(stat = "identity") 
+
+
+# plotdata_library_use <- plotdata_library %>%
+#                 filter(APPOINTMENT.TITLE == "LIBRARIAN") %>%
+#         group_by(Year) %>%
+#         mutate(count = n())
+# 
+# 
+# library(ggplot2)
+# ggplot(plotdata_library_use, aes(x = as.factor(Year), y = APPT.ANNUAL.FTR)) +
+#         geom_boxplot(aes(fill=count)) +
+#         scale_fill_continuous(low = "#897b76", high = "#ff4500") +
+#         stat_summary(fun.y=mean, geom="point", shape=5, size=4)
+      

@@ -1,0 +1,77 @@
+Visualizing Trends of Salary Changes at the University of Michigan Library: A Data Product 
+========================================================
+author: Ye Li
+date: November 19, 2015
+
+Data Product Overview
+========================================================
+An interactive browsing tool to visualize trends of salary changes of different types of positions at the University of Michigan Library
+
+- Data source: [Faculty and Staff Salary Data at U-M](http://quod.lib.umich.edu/e/errwpc/public/3/3/1/3314612.html)
+- Codes on GitHub: [Link](https://github.com/ChemLibrarian/DataProduct_projectUMLibrarySalary )
+- Data product on Shiny.io: [Link](https://chemlibrarian.shinyapps.io/DataProductProject_UMLibrarySalary)
+
+```{r load, echo = FALSE, results = "hide"}
+UMLibrarySalarly2002_2014 <- read.csv("UMLibrarySalary2002_2014.csv")
+```
+Cleaned dataset has `r nrow(UMLibrarySalarly2002_2014)` rows and `r ncol(UMLibrarySalarly2002_2014)` columns. 
+Useful variables include `r names(UMLibrarySalarly2002_2014[, c(2,4,8)])`.
+
+
+Input needed and calculations
+========================================================
+![DataInput screenshots](DataInput.png)
+***
+
+Users are directed to choose the interested type of position in the library (Appointment title) as the input to the applicaiton. 
+
+Calculations:
+- Subset data based on input
+- Group by Year and counts the number of individuals 
+- Plot boxplots for each type of position each year
+
+
+Output Example 
+========================================================
+
+```{r plot1, echo=FALSE, fig=TRUE}
+library(dplyr)
+library(ggplot2)
+salarydata <- UMLibrarySalarly2002_2014 %>% 
+            filter(APPOINTMENT.TITLE == "SR ASSOC LIBRARIAN") %>%
+            group_by(Year) %>%
+            mutate(count = n())
+
+ggplot(data = salarydata, aes(x = as.factor(Year), y = APPT.ANNUAL.FTR)) +
+            geom_boxplot(aes(fill=count)) +
+            scale_fill_continuous(low = "#edf3f8", high = "#528cbc", 
+                                  name = "Number of individuals" ) +
+            stat_summary(fun.y=mean, geom="point", shape=5, size=4) +
+            ggtitle("Trends of Salary Changes of the Selected Appointment Title 
+                    at the University of Michigan Library\nAnn Arbor Campus, 2002 - 2014\n(Data may or may not be available for all 
+                    the years depending on positions)")+
+            theme_bw() +
+            theme(plot.title = element_text(size = 14, face = "bold"), 
+                  axis.title.y = element_text(size = 14), 
+                  axis.title.x = element_text(size = 14)) + 
+            scale_x_discrete("Year") +
+            scale_y_continuous("Median Salary ($)")
+```
+###### Diamond shape --> mean.
+
+***
+- Selected appointment title: SR ASSOC LIBRARIAN 
+ + More individuals in later years
+ + Salary more scattered in later years 
+ + Salary increased faster between 2002 -09 than between 2010 -14
+
+Benefits and Limitations 
+========================================================
+Benefits
+- Easy to browse through various types of positions at the University of Michigan Library to identify unusual trends in salary change. 
+- Good plots for major appointment titles such as *ASSOC LIBRARIAN, ASST LIBRARIAN, SR ASSOC LIBRARIAN, and LIBRARIAN*.
+
+Limitations
+- Same types of positions can be named as different Appointment Titles over the years
+- Data may or may not be available for some types of positions for all the years from 2002 to 2014
+
